@@ -9,7 +9,7 @@
  * @author Lenovo
  */
 public class SimuladorBloques extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form SimuladorBloques
      */
@@ -49,6 +49,11 @@ public class SimuladorBloques extends javax.swing.JFrame {
         jLabel3.setText("Clave a buscar:");
 
         btnCargar.setText("Cargar");
+        btnCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarActionPerformed(evt);
+            }
+        });
 
         btnLimpiar.setText("Limpiar");
 
@@ -137,6 +142,42 @@ public class SimuladorBloques extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String[] partes = txtDatos.getText().split(",");
+            int tamBloque = Integer.parseInt(txtBloque.getText().trim());
+
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaBloques.getModel();
+            modelo.setRowCount(0);
+
+            areaLog.setText("");
+            areaLog.append("Creando bloques de tamaño " + tamBloque + "\n");
+
+            int bloque = 0;
+            StringBuilder contenido = new StringBuilder();
+
+            for (int i = 0; i < partes.length; i++) {
+                contenido.append(partes[i].trim());
+                if ((i + 1) % tamBloque == 0 || i == partes.length - 1) {
+                    modelo.addRow(new Object[]{bloque, contenido.toString()});
+                    areaLog.append("Bloque " + bloque + ": " + contenido.toString() + "\n");
+                    bloque++;
+                    contenido.setLength(0);
+                } else {
+                    contenido.append(", ");
+                }
+            }
+
+            btnBuscar.setEnabled(true);
+
+        } catch (NumberFormatException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Ingrese un tamaño de bloque válido", 
+                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCargarActionPerformed
 
     /**
      * @param args the command line arguments
