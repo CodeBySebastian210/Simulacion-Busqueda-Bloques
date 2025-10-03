@@ -56,6 +56,11 @@ public class SimuladorBloques extends javax.swing.JFrame {
         });
 
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         tablaBloques.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -71,6 +76,11 @@ public class SimuladorBloques extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tablaBloques);
 
         btnBuscar.setText("Buscar Secuencial");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         areaLog.setEditable(false);
         areaLog.setColumns(20);
@@ -85,32 +95,33 @@ public class SimuladorBloques extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(160, 160, 160)
+                        .addGap(99, 99, 99)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnCargar)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtDatos)
-                                    .addComponent(txtBloque)
-                                    .addComponent(txtClave, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(114, 114, 114)
-                                .addComponent(btnLimpiar))))
+                            .addComponent(txtBloque, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(126, 126, 126)
+                        .addComponent(btnCargar)
+                        .addGap(158, 158, 158)
+                        .addComponent(btnLimpiar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(317, 317, 317)
+                        .addGap(217, 217, 217)
                         .addComponent(btnBuscar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(275, 275, 275)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(209, Short.MAX_VALUE))
+                        .addGap(55, 55, 55)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(122, 122, 122)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,11 +144,11 @@ public class SimuladorBloques extends javax.swing.JFrame {
                     .addComponent(btnLimpiar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscar)
-                .addGap(49, 49, 49)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
@@ -178,6 +189,73 @@ public class SimuladorBloques extends javax.swing.JFrame {
                     "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCargarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String claveTexto = txtClave.getText().trim();
+            if (claveTexto.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Ingrese una clave para buscar", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int clave = Integer.parseInt(claveTexto);
+
+            int filas = tablaBloques.getRowCount();
+            boolean encontrado = false;
+
+            areaLog.append("Iniciando búsqueda de " + clave + "\n");
+
+            for (int i = 0; i < filas; i++) {
+                String contenido = tablaBloques.getValueAt(i, 1).toString();
+                areaLog.append("Revisando bloque " + i + ": " + contenido + "\n");
+
+                String[] valores = contenido.split(",");
+                for (String v : valores) {
+                    int valor = Integer.parseInt(v.trim());
+                    areaLog.append("   Comparando " + clave + " con " + valor + "\n");
+
+                    if (valor == clave) {
+                        areaLog.append("Clave " + clave + " encontrada en bloque " + i + "\n\n");
+                        tablaBloques.setRowSelectionInterval(i, i);
+                        javax.swing.JOptionPane.showMessageDialog(this, 
+                                "Clave " + clave + " encontrada en bloque " + i, 
+                                "Resultado", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                        encontrado = true;
+                        break;
+                    }
+                }
+                if (encontrado) break;
+            }
+
+            if (!encontrado) {
+                areaLog.append("Clave " + clave + " no encontrada en ningún bloque\n\n");
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                        "Clave " + clave + " no encontrada", 
+                        "Resultado", javax.swing.JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (NumberFormatException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Ingrese una clave numérica válida", 
+                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        txtDatos.setText("");
+        txtBloque.setText("");
+        txtClave.setText("");
+        areaLog.setText("");
+
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaBloques.getModel();
+        modelo.setRowCount(0);
+
+        btnBuscar.setEnabled(false);
+
+        areaLog.append("✔ Datos limpiados\n");
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
